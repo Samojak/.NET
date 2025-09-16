@@ -1,4 +1,4 @@
-﻿using CLI.UI.Comments;
+﻿using CLI.UI.ManageComments;
 using CLI.UI.ManagePosts;
 using CLI.UI.ManageUsers;
 using RepositoryContracts;

@@ -1,7 +1,7 @@
 ﻿using Entities;
 using RepositoryContracts;
 
-namespace CLI.UI.Comments;
+namespace CLI.UI.ManageComments;
 
 public class CreateCommentView
 {
