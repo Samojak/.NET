@@ -10,10 +10,11 @@ IUserRepository userRepository = new UserInMemomoryRepository();
 ICommentRepository commentRepository = new CommentInMemomoryRepository();
 IPostRepository postRepository = new PostInMemoryRepository();
 
-CreateCommentView createCommentView = new CreateCommentView(commentRepository);
+CreateCommentView createCommentView = new CreateCommentView(commentRepository,userRepository);
 CreatePostView  createPostView = new CreatePostView(postRepository, userRepository);
-ListPostView listPostView = new ListPostView(postRepository);
-SinglePostView singlePostView = new SinglePostView(postRepository);
+SinglePostView singlePostView = new SinglePostView(postRepository,commentRepository,userRepository,createCommentView);
+ListPostView listPostView = new ListPostView(postRepository,userRepository,commentRepository,singlePostView);
+
 CreateUserView  createUserView = new CreateUserView(userRepository);
 ListUsersView listUsersView = new ListUsersView(userRepository);
 

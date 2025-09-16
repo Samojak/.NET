@@ -58,26 +58,15 @@ public class CliApp
                     Console.WriteLine("You chose 2");
                     createPostView.StartAsync();
                     break;
-                }case "3": // 3. Add Comment
-                {
-                    Console.WriteLine("You chose 3");
-                    createCommentView.StartAsync();
-                    break;
-                }case "4": // 4. View Posts
+                }case "3": // 3. View Posts
                 {
                     Console.WriteLine("You chose 4");
                     listPostView.StartAsync();
                     break;
                 }
-                case "5": // 5. View single Post
+                case "4": // 4. List Users
                 {
                     Console.WriteLine("You chose 5");
-                    singlePostView.StartAsync();
-                    break;
-                }
-                case "6": // List Users
-                {
-                    Console.WriteLine("You chose 6");
                     listUsersView.StartAsync();
                     break;
                 }
@@ -112,10 +101,8 @@ public class CliApp
         Console.WriteLine();
         Console.WriteLine("  1. Create User");
         Console.WriteLine("  2. Create Post");
-        Console.WriteLine("  3. Add Comment");
-        Console.WriteLine("  4. View Posts");
-        Console.WriteLine("  5. View single Post");
-        Console.WriteLine("  6. View Users");
+        Console.WriteLine("  3. View Posts");
+        Console.WriteLine("  4. View Users");
         Console.WriteLine("  0. Exit");
         Console.WriteLine();
         Console.Write("Enter your choice: ");

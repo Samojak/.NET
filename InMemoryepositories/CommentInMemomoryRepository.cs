@@ -1,4 +1,5 @@
-﻿using Entities;
+﻿using System.Collections;
+using Entities;
 using RepositoryContracts;
 
 namespace InMemoryepositories;
@@ -70,5 +71,11 @@ public class CommentInMemomoryRepository : ICommentRepository
     public IQueryable<Comment> GetMany()
     {
         return Comments.AsQueryable();
+    }
+
+    public Task<IEnumerable<Comment>> GetByPostIdAsync(int postId)
+    {
+        var result = Comments.Where(c => c.PostId == postId);
+        return Task.FromResult(result);
     }
 }
