@@ -2,13 +2,13 @@
 using CLI.UI.ManageComments;
 using CLI.UI.ManagePosts;
 using CLI.UI.ManageUsers;
-using InMemoryepositories;
+using FileRepository;
 using RepositoryContracts;
 
 Console.WriteLine("Starting CLI app...");
-IUserRepository userRepository = new UserInMemomoryRepository();
-ICommentRepository commentRepository = new CommentInMemomoryRepository();
-IPostRepository postRepository = new PostInMemoryRepository();
+IUserRepository userRepository = new UserFileRepository();
+ICommentRepository commentRepository = new CommentFileRepository();
+IPostRepository postRepository = new PostFileRepository();
 
 CreateCommentView createCommentView = new CreateCommentView(commentRepository,userRepository);
 CreatePostView  createPostView = new CreatePostView(postRepository, userRepository);

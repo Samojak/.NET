@@ -50,24 +50,24 @@ public class CliApp
                 case "1": //  1. Create User
                 {
                     Console.WriteLine("You chose 1");
-                    createUserView.StartAsync();
+                    await createUserView.StartAsync();
                     break;
                 }
                 case "2": // 2. Create Post
                 {
                     Console.WriteLine("You chose 2");
-                    createPostView.StartAsync();
+                    await createPostView.StartAsync();
                     break;
                 }case "3": // 3. View Posts
                 {
                     Console.WriteLine("You chose 4");
-                    listPostView.StartAsync();
+                    await listPostView.StartAsync();
                     break;
                 }
                 case "4": // 4. List Users
                 {
                     Console.WriteLine("You chose 5");
-                    listUsersView.StartAsync();
+                    await listUsersView.StartAsync();
                     break;
                 }
                 case "0": //exit
