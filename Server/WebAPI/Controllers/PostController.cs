@@ -31,16 +31,19 @@ public class PostController
         };
         Post created = await postRepo.AddAsync(post);
         
-        return Results.Created($"api/Post/{created.Id}", created);
+        
+        return Results.Created($"/post/{created.Id}", ToDto(created));
     }
 
-    [HttpGet("{userId}")]
-    public async Task<IResult> GetSinglePost([FromRoute] int userId)
+    [HttpGet("{postId}")]
+    public async Task<IResult> GetSinglePost([FromRoute] int postId)
     {
         try
         {
-            Post result = await postRepo.GetSingleAsync(userId);
-            return Results.Ok(result);
+            Post result = await postRepo.GetSingleAsync(postId);
+            
+            
+            return Results.Ok(ToDto(result));
         }
         catch (Exception e)
         {
@@ -49,20 +52,20 @@ public class PostController
         }
     }
 
-    [HttpDelete("{userId}")]
-    public async Task<IResult> DeletePost([FromRoute] int userId)
+    [HttpDelete("{postId}")]
+    public async Task<IResult> DeletePost([FromRoute] int postId)
     {
-        await postRepo.DeleteAsync(userId);
-        return Results.Ok();
+        await postRepo.DeleteAsync(postId);
+        return Results.NoContent();
     }
 
-    [HttpPut("{userId}")]
-    public async Task<IResult> UpdatePost([FromRoute] int userId,
+    [HttpPut("{postId}")]
+    public async Task<IResult> UpdatePost([FromRoute] int postId,
         [FromBody] PostDto request)
     {
         var post = new Post
         {
-            Id = userId,
+            Id = postId,
             Title = request.Title,
             Body = request.Body,
             UserId = request.UserID
@@ -72,21 +75,27 @@ public class PostController
     }
 
     [HttpGet]
-    public async Task<IResult> GetAllPosts([FromQuery] string? TitleContains,
-        [FromQuery] int? userIdContains)
+    public IResult GetAllPosts([FromQuery] string? q, [FromQuery] int? userId)
     {
         var posts = postRepo.GetMany();
-        
-        if (!string.IsNullOrEmpty(TitleContains))
-        {
-            posts = posts.Where(p => p.Title.ToLower().Contains(TitleContains.ToLower()));
-        }
-        if (userIdContains.HasValue)
-        {
-            posts = posts.Where(p => p.UserId == userIdContains.Value);
-        }
-        return Results.Ok(posts.ToList());
+
+        if (!string.IsNullOrWhiteSpace(q))
+            posts = posts.Where(p => p.Title.Contains(q, StringComparison.OrdinalIgnoreCase));
+
+        if (userId.HasValue)
+            posts = posts.Where(p => p.UserId == userId.Value);
+
+        var dtos = posts.Select(ToDto).ToList();
+        return Results.Ok(dtos);
     }
+
+    // helpers
+    private static PostDto ToDto(Post p) => new()
+    {
+        Title = p.Title,
+        Body  = p.Body,
+        UserID = p.UserId   // map entity UserId -> DTO UserID
+    };
     
     
     

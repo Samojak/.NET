@@ -30,9 +30,18 @@ public class UserController
             Username = request.UserName,
             Password = request.Password
         };
+        
+        
+        
         User created = await userRepo.AddAsync(user);
         
-        return Results.Created($"/user/{created.Id}", created);
+        var dto = new UserDto
+        {
+            UserName = created.Username,
+            Password = created.Password
+        };
+        
+        return Results.Created($"/user/{created.Id}", dto);
     }
 
     [HttpGet("{userId}")]
@@ -41,7 +50,14 @@ public class UserController
         try
         {
             User result = await userRepo.GetSingleAsync(userId);
-            return Results.Ok(result);
+            
+            var dto = new UserDto
+            {
+                UserName = result.Username,
+                Password = result.Password
+            };
+            
+            return Results.Ok(dto);
         }
         catch (Exception e)
         {
@@ -71,15 +87,23 @@ public class UserController
         return Results.NoContent();
     }
 
+    // GET /user
     [HttpGet]
-    public async Task<IResult> GetAllUsers([FromQuery] string? nameContains)
+    public IResult GetAllUsers([FromQuery] string? nameContains)
     {
         var users = userRepo.GetMany();
-        if (!string.IsNullOrEmpty(nameContains))
+
+        if (!string.IsNullOrWhiteSpace(nameContains))
+            users = users.Where(u => u.Username.Contains(nameContains, StringComparison.OrdinalIgnoreCase));
+
+        var dtos = users.Select(u => new UserDto
         {
-            users = users.Where(u => u.Username.ToLower().Contains(nameContains.ToLower()));
-        }
-        return Results.Ok(users.ToList());
+            UserName = u.Username,
+            Password = u.Password
+        }).ToList();
+
+        return Results.Ok(dtos);
     }
+
     
 }
