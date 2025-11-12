@@ -26,7 +26,7 @@ public class CommentFileRepository : ICommentRepository
             comments = new List<Comment>();
         }
 
-        int maxId = comments.Count > 0 ? comments.Max(c => c.Id) : 0; // first comment id = 1
+        int maxId = comments.Count > 0 ? comments.Max(c => c.Id) : 0;
         comment.Id = maxId + 1;
 
         comments.Add(comment);

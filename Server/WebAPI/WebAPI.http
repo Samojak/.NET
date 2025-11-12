@@ -1,0 +1,160 @@
+@WebAPI_HostAddress = http://localhost:5107
+@contentType = application/json
+
+### 🧍‍♂️ USER CONTROLLER
+
+# ➕ Create user
+POST {{WebAPI_HostAddress}}/user
+Content-Type: {{contentType}}
+
+{
+  "userName": "samo2",
+  "password": "12345"
+}
+
+###
+
+# 📜 Get all users
+GET {{WebAPI_HostAddress}}/user
+Accept: {{contentType}}
+
+###
+
+# 🔍 Filter users by name
+GET {{WebAPI_HostAddress}}/user?nameContains=sam
+Accept: {{contentType}}
+
+###
+
+# 👤 Get single user
+GET {{WebAPI_HostAddress}}/user/1
+Accept: {{contentType}}
+
+###
+
+# ✏️ Update user
+PUT {{WebAPI_HostAddress}}/user/1
+Content-Type: {{contentType}}
+
+{
+  "userName": "samuel",
+  "password": "newpass"
+}
+
+###
+
+# ❌ Delete user
+DELETE {{WebAPI_HostAddress}}/user/1
+Accept: {{contentType}}
+
+---
+
+### 📝 POST CONTROLLER
+
+# ➕ Create post
+POST {{WebAPI_HostAddress}}/post
+Content-Type: {{contentType}}
+
+{
+  "title": "My first post",
+  "body": "Hello world!",
+  "userId": 1
+}
+
+###
+
+# 📜 Get all posts
+GET {{WebAPI_HostAddress}}/post
+Accept: {{contentType}}
+
+###
+// Doesnt work
+# 🔍 Filter posts by title 
+GET {{WebAPI_HostAddress}}/post?titleContains=hello
+Accept: {{contentType}}
+
+###
+
+# 🔍 Filter posts by userId
+GET {{WebAPI_HostAddress}}/post?userIdContains=1
+Accept: {{contentType}}
+
+###
+
+# 👁️ Get single post
+GET {{WebAPI_HostAddress}}/post/1
+Accept: {{contentType}}
+
+###
+
+# ✏️ Update post
+PUT {{WebAPI_HostAddress}}/post/1
+Content-Type: {{contentType}}
+
+{
+  "title": "Updated title",
+  "body": "Edited text",
+  "userId": 1
+}
+
+###
+
+# ❌ Delete post
+DELETE {{WebAPI_HostAddress}}/post/1
+Accept: {{contentType}}
+
+---
+
+### 💬 COMMENT CONTROLLER
+
+# ➕ Create comment
+POST {{WebAPI_HostAddress}}/comment
+Content-Type: {{contentType}}
+
+{
+  "body": "Nice post!",
+  "postId": 1,
+  "userId": 1
+}
+
+###
+
+# 📜 Get all comments
+GET {{WebAPI_HostAddress}}/comment
+Accept: {{contentType}}
+
+###
+
+# 🔍 Filter comments by userId
+GET {{WebAPI_HostAddress}}/comment?userId=1
+Accept: {{contentType}}
+
+###
+
+# 🔍 Filter comments by postId
+GET {{WebAPI_HostAddress}}/comment?postId=1
+Accept: {{contentType}}
+
+###
+
+# 👁️ Get single comment
+GET {{WebAPI_HostAddress}}/comment/1
+Accept: {{contentType}}
+
+###
+
+# ✏️ Update comment
+PUT {{WebAPI_HostAddress}}/comment/1
+Content-Type: {{contentType}}
+
+{
+  "body": "Edited comment text",
+  "postId": 1,
+  "userId": 1
+}
+
+###
+
+# ❌ Delete comment
+DELETE {{WebAPI_HostAddress}}/comment/1
+Accept: {{contentType}}
