@@ -1,4 +1,5 @@
 using BlazorApp.Components;
+using BlazorApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,11 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddScoped(sp => new HttpClient
-    {
-        BaseAddress = new Uri("https://localhost:5107")
-    }
-);
+var apiBase = new Uri("http://localhost:5107"); // your WebAPI URL
+
+builder.Services.AddHttpClient<IUserService, HttpUserService>(c => c.BaseAddress = apiBase);
+builder.Services.AddHttpClient<IPostService, HttpPostService>(c => c.BaseAddress = apiBase);
+builder.Services.AddHttpClient<ICommentService, HttpCommentService>(c => c.BaseAddress = apiBase);
 
 var app = builder.Build();
 
@@ -22,7 +23,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseStatusCodePagesWithReExecute("/not-found", createScopeForErrors: true);
+app.UseStatusCodePagesWithReExecute("/not-found");
 
 app.UseHttpsRedirection();
 

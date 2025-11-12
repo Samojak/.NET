@@ -1,0 +1,105 @@
+@page "/postdetails/{id:int}"
+@inject IPostService PostService
+@inject ICommentService CommentService
+@using ApiContracts
+@using BlazorApp.Services
+
+<div class="container mt-4">
+    @if (post == null)
+    {
+        <div class="text-muted">Loading post...</div>
+    }
+    else
+    {
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h3 class="card-title">@post.Title</h3>
+                <p class="card-text">@post.Body</p>
+                <small class="text-secondary">Written by user @post.UserID</small>
+            </div>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white fw-semibold">
+                Comments
+            </div>
+            <div class="card-body">
+                @if (comments == null)
+                {
+                    <p class="text-muted">Loading comments...</p>
+                }
+                else if (comments.Count == 0)
+                {
+                    <p class="text-muted mb-0">No comments yet.</p>
+                }
+                else
+                {
+                    @foreach (var c in comments)
+                    {
+                        <div class="border-bottom pb-2 mb-2">
+                            <p class="mb-1">@c.Body</p>
+                            <small class="text-secondary">User @c.UserId</small>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-light fw-semibold">
+                Add a Comment
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <textarea class="form-control" @bind="newComment.Body"
+                              placeholder="Write your comment..." rows="3"></textarea>
+                </div>
+                <button class="btn btn-success" @onclick="AddComment">Post Comment</button>
+
+                @if (!string.IsNullOrEmpty(message))
+                {
+                    <div class="mt-2 text-info">@message</div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    private PostDto? post;
+    private List<CommentDto>? comments;
+    private CommentDto? newComment;
+    private string? message;
+
+    protected override async Task OnInitializedAsync()
+    {
+        post = await PostService.GetPostAsync(id);
+        comments = await CommentService.GetAllCommentsAsync(postId: id);
+
+        newComment = new CommentDto
+        {
+            UserId = 1,   // temp until auth
+            PostId = id,
+            Body = string.Empty
+        };
+    }
+
+    private async Task AddComment()
+    {
+        if (newComment is null) return;
+
+        try
+        {
+            await CommentService.AddCommentAsync(newComment);
+            newComment.Body = string.Empty;
+            comments = await CommentService.GetAllCommentsAsync(postId: id);
+            message = "✅ Comment added!";
+        }
+        catch (Exception e)
+        {
+            message = $"❌ {e.Message}";
+        }
+    }
+}

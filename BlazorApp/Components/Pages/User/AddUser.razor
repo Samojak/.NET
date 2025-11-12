@@ -1,0 +1,59 @@
+@page "/add-user"
+@inject IUserService UserService
+@using ApiContracts
+@using BlazorApp.Services
+
+<div class="container mt-4" style="max-width:500px;">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white fw-semibold">
+            Create New User
+        </div>
+
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input class="form-control" @bind="user.UserName" placeholder="Enter username" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input class="form-control" @bind="user.Password" type="password" placeholder="Enter password" />
+            </div>
+
+            <button class="btn btn-success" @onclick="AddUserEvent">Create</button>
+
+            @if (!string.IsNullOrEmpty(message))
+            {
+                <div class="mt-3 text-info">@message</div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private UserDto user = new UserDto
+    {
+        UserName = string.Empty,
+        Password = string.Empty
+    };
+    private string? message;
+
+    private async Task AddUserEvent()
+    {
+        try
+        {
+            var created = await UserService.AddUserAsync(user);
+            message = $"✅ User '{created.UserName}' created!";
+            // reset form (must satisfy required again)
+            user = new UserDto
+            {
+                UserName = string.Empty,
+                Password = string.Empty
+            };
+        }
+        catch (Exception e)
+        {
+            message = $"❌ {e.Message}";
+        }
+    }
+}

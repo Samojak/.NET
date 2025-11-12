@@ -6,7 +6,7 @@ namespace BlazorApp.Services;
 using ApiContracts;
 
 
-public class HttpPostService
+public class HttpPostService : IPostService
 {
     private readonly HttpClient client;
     
@@ -58,7 +58,6 @@ public class HttpPostService
         { 
             throw new Exception(response);
         }
-        
         return JsonSerializer.Deserialize<PostDto>(response, new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true

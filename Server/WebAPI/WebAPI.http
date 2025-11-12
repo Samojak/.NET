@@ -58,7 +58,7 @@ Content-Type: {{contentType}}
 {
   "title": "My first post",
   "body": "Hello world!",
-  "userId": 1
+  "userId": 3
 }
 
 ###

@@ -1,0 +1,56 @@
+@page "/add-post"
+@inject IPostService PostService
+@using ApiContracts
+@using BlazorApp.Services
+
+<div class="container mt-4" style="max-width:600px;">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white fw-semibold">
+            Create New Post
+        </div>
+
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">Title</label>
+                <input class="form-control" @bind="post.Title" placeholder="Enter post title" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Body</label>
+                <textarea class="form-control" @bind="post.Body" placeholder="Write your post..." rows="4"></textarea>
+            </div>
+
+            <button class="btn btn-success" @onclick="AddPostEvent">Publish</button>
+
+            @if (!string.IsNullOrEmpty(message))
+            {
+                <div class="mt-3 text-info">@message</div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private PostDto post = new()
+    {
+        Title = string.Empty,
+        Body = string.Empty,
+        UserID = 1 // temp until login
+    };
+    private string? message;
+
+    private async Task AddPostEvent()
+    {
+        try
+        {
+            var created = await PostService.AddPostAsync(post);
+            message = $"✅ Post '{created.Title}' added!";
+            post.Title = string.Empty;
+            post.Body = string.Empty;
+        }
+        catch (Exception e)
+        {
+            message = $"❌ {e.Message}";
+        }
+    }
+}

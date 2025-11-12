@@ -92,9 +92,11 @@ public class PostController
     // helpers
     private static PostDto ToDto(Post p) => new()
     {
+        Id = p.Id,
         Title = p.Title,
         Body  = p.Body,
         UserID = p.UserId   // map entity UserId -> DTO UserID
+        
     };
     
     
