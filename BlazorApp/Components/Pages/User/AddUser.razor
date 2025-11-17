@@ -31,7 +31,7 @@
 </div>
 
 @code {
-    private UserDto user = new UserDto
+    private RegisterUserDto user = new RegisterUserDto
     {
         UserName = string.Empty,
         Password = string.Empty
@@ -45,10 +45,9 @@
             var created = await UserService.AddUserAsync(user);
             message = $"✅ User '{created.UserName}' created!";
             // reset form (must satisfy required again)
-            user = new UserDto
+            user = new RegisterUserDto
             {
                 UserName = string.Empty,
-                Password = string.Empty
             };
         }
         catch (Exception e)

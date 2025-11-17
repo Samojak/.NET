@@ -93,6 +93,23 @@ public class UserFileRepository : IUserRepository
         return await Task.FromResult(userToFind);
     }
 
+    public async Task<User> GetUserByUsernameAsync(string username)
+    {
+        // Deserilize the json
+        string userAsJson = await File.ReadAllTextAsync(filePath);
+        List<User>? users = JsonSerializer.Deserialize<List<User>>(userAsJson);
+        users ??= new List<User>();
+        
+        // find the user
+        User? userToFind = users.Find(u => u.Username == username);
+        if (userToFind is null)
+        {
+            throw new InvalidOperationException($"User with username: '{username}' not found");
+        }
+
+        return await Task.FromResult(userToFind);
+    }
+
     public IQueryable<User> GetMany()
     {
         // Deserilize the json

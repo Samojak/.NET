@@ -1,8 +1,24 @@
 @page "/add-post"
 @inject IPostService PostService
+@inject NavigationManager Navigation
+
 @using ApiContracts
 @using BlazorApp.Services
 
+
+
+<AuthorizeView>
+<NotAuthorized>
+    <div class="alert alert-warning mt-4">
+        You must be logged in to see posts.
+    </div>
+    <button class="btn btn-primary"
+            @onclick='() => Navigation.NavigateTo("login")'>
+        Go to login
+    </button>
+</NotAuthorized>
+
+<Authorized>
 <div class="container mt-4" style="max-width:600px;">
     <div class="card shadow-sm">
         <div class="card-header bg-primary text-white fw-semibold">
@@ -29,6 +45,8 @@
         </div>
     </div>
 </div>
+</Authorized>
+</AuthorizeView>
 
 @code {
     private PostDto post = new()

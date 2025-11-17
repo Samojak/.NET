@@ -67,6 +67,20 @@ public class UserInMemomoryRepository : IUserRepository
         return Task.FromResult(userToGet);
     }
 
+    public Task<User> GetUserByUsernameAsync(string username)
+    {
+        
+        User? userToGet = Users.SingleOrDefault(u => u.Username == username);
+        if (userToGet is null)
+        {
+            throw new InvalidOperationException(
+                $"User with username '{username}' not found");
+        }
+        return Task.FromResult(userToGet);
+    }
+    
+    
+
     public IQueryable<User> GetMany()
     {
         return Users.AsQueryable();

@@ -13,7 +13,7 @@ public class HttpUserService : IUserService
     }
 
 
-    public async Task<UserDto> AddUserAsync(UserDto request)
+    public async Task<UserDto> AddUserAsync(RegisterUserDto request)
     {
         var resp = await client.PostAsJsonAsync("user", request);
         resp.EnsureSuccessStatusCode();

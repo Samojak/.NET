@@ -22,7 +22,7 @@ public class UserController
     
     //POST https://localhost:7080/user
     [HttpPost]
-    public async Task<IResult> AddUser([FromBody] UserDto request)
+    public async Task<IResult> AddUser([FromBody] RegisterUserDto request)
     {
         
         var user = new User
@@ -38,7 +38,7 @@ public class UserController
         var dto = new UserDto
         {
             UserName = created.Username,
-            Password = created.Password
+           
         };
         
         return Results.Created($"/user/{created.Id}", dto);
@@ -54,7 +54,7 @@ public class UserController
             var dto = new UserDto
             {
                 UserName = result.Username,
-                Password = result.Password
+            
             };
             
             return Results.Ok(dto);
@@ -81,7 +81,7 @@ public class UserController
         {
             Id = userId,
             Username = request.UserName,
-            Password = request.Password
+        
         };
         await userRepo.UpdateAsync(user);
         return Results.NoContent();
@@ -99,7 +99,7 @@ public class UserController
         var dtos = users.Select(u => new UserDto
         {
             UserName = u.Username,
-            Password = u.Password
+           
         }).ToList();
 
         return Results.Ok(dtos);
